@@ -1,22 +1,19 @@
 package org.codesnippet.ecomorderservice.services;
 
+import org.codesnippet.ecomorderservice.client.InventoryClient;
 import org.codesnippet.ecomorderservice.dto.Inventory;
-import org.codesnippet.ecomorderservice.exceptions.MyCustomRuntimeException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.InputStream;
-
 @Service
 public class OrderService {
-
+    private final InventoryClient inventoryClient;
     private  final RestTemplate restTemplate;
     private final RestClient restClient;
-    public OrderService(RestTemplate restTemplate, RestClient restClient) {
+    public OrderService(InventoryClient inventoryClient, RestTemplate restTemplate, RestClient restClient) {
+        this.inventoryClient = inventoryClient;
         this.restTemplate = restTemplate;
         this.restClient = restClient;
     }
@@ -29,50 +26,28 @@ public class OrderService {
                 String.class
         );*/
 
-/*
-    //Simple RestClient Get
-    ResponseEntity<Inventory> entity = restClient.get()
+    /*ResponseEntity<Inventory> entity = restClient.get()
                 .uri("http://localhost:8081/inventory/{productId}", productId)
                 .retrieve()
                 .toEntity(Inventory.class);
-        */
-        // onStatus Example
-        ResponseEntity<Inventory> entity = restClient.get()
-                .uri("http://localhost:8081/inventory/{productId}", productId)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,((request, response) ->{
-                    throw new MyCustomRuntimeException(response.getStatusCode(),response.getHeaders());
-                } ))
-                .toEntity(Inventory.class);
+*/
+        Inventory inventory = inventoryClient.getInventory(productId);
+        int quantity = inventory.getQuantity();
+        updateInventory(inventory);
 
-     /*
-     // Exchange Example For Demo
-     Object exchange = restClient.get()
-                .uri("http://localhost:8081/inventory/{productId}", productId)
-                .exchange(((clientRequest, clientResponse) ->
-                {
-                    if (clientResponse.getStatusCode().is4xxClientError()) {
-                        throw new MyCustomRuntimeException(clientResponse.getStatusCode(), clientResponse.getHeaders());
-                    } else {
-                        return clientResponse.getBody();
-                    }
-                }));*/
-
-
-        updateInventory(entity.getBody());
-
-        return  entity.getBody()!=null && entity.getBody().getQuantity()>0?
+        return  quantity>0?
               "Order Placed Successfully":
               "Product Out Of Stock";
     }
 
     private void updateInventory(Inventory inventory) {
         inventory.setQuantity(inventory.getQuantity()-1);
-        restClient.post()
+        inventoryClient.updateInventory(inventory);
+        /*restClient.post()
                 .uri("http://localhost:8081/inventory")
                 .body(inventory)
                 .retrieve()
-                .toBodilessEntity();
+                .toBodilessEntity();*/
     }
 
 
