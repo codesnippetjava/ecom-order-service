@@ -20,29 +20,19 @@ public class OrderService {
     private  final RestTemplate restTemplate;
     private final RestClient restClient;
     private final DiscoveryClient discoveryClient;
+    private final InventoryService inventoryService;
 
-    public OrderService(InventoryClient inventoryClient, RestTemplate restTemplate, RestClient restClient, DiscoveryClient discoveryClient) {
+    public OrderService(InventoryClient inventoryClient, RestTemplate restTemplate, RestClient restClient, DiscoveryClient discoveryClient, InventoryService inventoryService, InventoryService inventoryService1) {
         this.inventoryClient = inventoryClient;
         this.restTemplate = restTemplate;
         this.restClient = restClient;
         this.discoveryClient = discoveryClient;
+        this.inventoryService = inventoryService1;
     }
 
     public String placeOrder(Long productId){
 
-     /*
-        // Rest Template Example
-        String response = restTemplate.getForObject(
-                "http://localhost:8081/inventory/" + productId,
-                String.class
-        );*/
-
-    /*ResponseEntity<Inventory> entity = restClient.get()
-                .uri("http://localhost:8081/inventory/{productId}", productId)
-                .retrieve()
-                .toEntity(Inventory.class);
-*/
-        Inventory inventory = inventoryClient.getInventory(productId);
+        Inventory inventory = inventoryService.getInventory(productId);
         int quantity = inventory.getQuantity();
         updateInventory(inventory);
 
@@ -51,14 +41,11 @@ public class OrderService {
               "Product Out Of Stock";
     }
 
+
     private void updateInventory(Inventory inventory) {
         inventory.setQuantity(inventory.getQuantity()-1);
         inventoryClient.updateInventory(inventory);
-        /*restClient.post()
-                .uri("http://localhost:8081/inventory")
-                .body(inventory)
-                .retrieve()
-                .toBodilessEntity();*/
+
     }
 
 

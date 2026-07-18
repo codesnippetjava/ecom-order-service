@@ -4,13 +4,9 @@ import feign.Logger;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.Retryer;
-import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import org.codesnippet.ecomorderservice.exceptions.CustomErrorDecoder;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.boot.http.converter.autoconfigure.HttpMessageConverters;
-import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

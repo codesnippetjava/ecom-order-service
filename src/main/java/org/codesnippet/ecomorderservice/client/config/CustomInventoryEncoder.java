@@ -3,8 +3,7 @@ package org.codesnippet.ecomorderservice.client.config;
 import feign.RequestTemplate;
 import feign.codec.Encoder;
 import org.codesnippet.ecomorderservice.dto.Inventory;
-import tools.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
