@@ -55,3 +55,8 @@ resilience4j:
 
         ignore-exceptions:
             - java.lang.IllegalArgumentException
+  timelimiter:
+    instances:
+      inventoryServiceTimeLimiter:
+        timeout-duration: 2s
+        cancel-running-future: true
