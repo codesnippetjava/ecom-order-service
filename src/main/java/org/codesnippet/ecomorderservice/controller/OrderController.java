@@ -3,6 +3,8 @@ package org.codesnippet.ecomorderservice.controller;
 import org.codesnippet.ecomorderservice.services.OrderService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -14,7 +16,7 @@ public class OrderController {
     }
 
     @PostMapping("/{productId}")
-    public String placeOrder(@PathVariable Long productId){
+    public String placeOrder(@PathVariable Long productId) throws ExecutionException, InterruptedException {
        return orderService.placeOrder(productId);
     }
 }

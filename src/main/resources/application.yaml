@@ -1,6 +1,13 @@
 spring:
   application:
     name: ecom-order-service
+  cloud:
+    openfeign:
+      client:
+        config:
+          ecom-inventory-service:
+            connectTimeout: 2000
+            readTimeout: 30000
 
 server:
   port: 8080
@@ -55,3 +62,14 @@ resilience4j:
 
         ignore-exceptions:
             - java.lang.IllegalArgumentException
+  bulkhead:
+    instances:
+      inventoryServiceBulkhead:
+        max-concurrent-calls: 2
+        max-wait-duration: 10s
+  thread-pool-bulkhead:
+    instances:
+      inventoryThreadPool:
+        max-thread-pool-size: 3
+        core-thread-pool-size: 1
+        queue-capacity: 1
