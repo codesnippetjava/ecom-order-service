@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -5,10 +7,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>4.0.5</version>
         <relativePath/>
     </parent>
 
@@ -18,11 +21,19 @@
 
     <properties>
         <java.version>21</java.version>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
+
+        <!-- Spring Cloud compatible with Spring Boot 4 -->
+        <spring-cloud.version>2025.1.1</spring-cloud.version>
+
+        <!-- Resilience4j -->
+        <resilience4j.version>2.4.0</resilience4j.version>
     </properties>
 
+    <!-- Dependency Management -->
     <dependencyManagement>
         <dependencies>
+
+            <!-- Spring Cloud BOM -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -30,51 +41,109 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Resilience4j BOM -->
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-bom</artifactId>
+                <version>${resilience4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
 
-        <!-- Spring MVC -->
+        <!-- ===================================== -->
+        <!-- Spring Web / REST                     -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- OpenFeign -->
+
+        <!-- ===================================== -->
+        <!-- Spring Cloud OpenFeign                -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <!-- Eureka -->
+
+        <!-- ===================================== -->
+        <!-- Eureka Client                         -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Spring Retry -->
+
+        <!-- ===================================== -->
+        <!-- Spring Retry                          -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
         </dependency>
 
-        <!-- AOP -->
+
+        <!-- ===================================== -->
+        <!-- Spring AOP                            -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter-aspectj</artifactId>
         </dependency>
+
+
+        <!-- ===================================== -->
+        <!-- Resilience4j                          -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>io.github.resilience4j</groupId>
-            <artifactId>resilience4j-spring-boot3</artifactId>
+            <artifactId>resilience4j-spring-boot4</artifactId>
+            <version>2.4.0</version>
         </dependency>
-        <!-- Actuator -->
+
+
+        <!-- ===================================== -->
+        <!-- Actuator                              -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- Tests -->
+
+        <!-- ===================================== -->
+        <!-- OpenTelemetry                         -->
+        <!-- ===================================== -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-micrometer</artifactId>
+        </dependency>
+
+        <!-- ===================================== -->
+        <!-- Tests                                 -->
+        <!-- ===================================== -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -83,12 +152,19 @@
 
     </dependencies>
 
+
+    <!-- ========================================= -->
+    <!-- Build                                    -->
+    <!-- ========================================= -->
+
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 

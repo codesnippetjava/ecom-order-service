@@ -73,3 +73,15 @@ resilience4j:
         max-thread-pool-size: 3
         core-thread-pool-size: 1
         queue-capacity: 1
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
+
