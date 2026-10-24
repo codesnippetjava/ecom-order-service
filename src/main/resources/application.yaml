@@ -8,6 +8,11 @@ spring:
           ecom-inventory-service:
             connectTimeout: 2000
             readTimeout: 30000
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: 8080
